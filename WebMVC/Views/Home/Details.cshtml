@@ -1,0 +1,74 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Company</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Company ID:
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.company.CompanyId
+        </dd>
+        <dt class = "col-sm-2">
+            Company Name:
+        </dt>
+        <dd class = "col-sm-10">
+           @Model.company.CompanyName
+        </dd>
+        <dt class = "col-sm-2">
+            Company Type:
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.company.CompanyType
+        </dd>
+    </dl>
+    <hr />
+    <h4>Company's Staff</h4>
+    @foreach(var staff in Model.staff)
+    {
+        <dl class="row">
+            <dt class="col-sm-2">
+                Staff ID:
+            </dt>
+            <dd class="col-sm-10">
+                @staff.StaffId
+            </dd>
+            <dt class="col-sm-2">
+                Staff Name:
+            </dt>
+            <dd class="col-sm-10">
+                @staff.StaffName
+            </dd>
+            <dt class="col-sm-2">
+                Staff Gender:
+            </dt>
+            <dd class="col-sm-10">
+                @staff.StaffGender
+            </dd>
+            <dt class="col-sm-2">
+                Staff Contact:
+            </dt>
+            <dd class="col-sm-10">
+                @staff.StaffContact
+            </dd>
+            <dt class="col-sm-2">
+                Staff Position:
+            </dt>
+            <dd class="col-sm-10">
+                @staff.StaffPosition
+            </dd>            
+        </dl>
+        <br />
+    }
+    
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
