@@ -1,0 +1,51 @@
+﻿@model WebApi.Models.Staff
+
+@{
+    ViewData["Title"] = "Add Staff";
+}
+
+<h4>Add new Staff</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="StaffId" type="hidden" class="form-control" />
+            <div class="form-group">
+                <label asp-for="StaffName" class="control-label">Name</label>
+                <input asp-for="StaffName" class="form-control" />
+                <span asp-validation-for="StaffName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffGender" class="control-label">Gender</label>
+                <input asp-for="StaffGender" class="form-control" />
+                <span asp-validation-for="StaffGender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffContact" class="control-label">Contact</label>
+                <input asp-for="StaffContact" class="form-control" />
+                <span asp-validation-for="StaffContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffPosition" class="control-label">Position</label>
+                <input asp-for="StaffPosition" class="form-control" />
+                <span asp-validation-for="StaffPosition" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="CompanyId" class="control-label">Company</label>
+                @Html.DropDownList("CompanyId", (IEnumerable<SelectListItem>)ViewBag.companies, "Select Company", new { @class ="form-control" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

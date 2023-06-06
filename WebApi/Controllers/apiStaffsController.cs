@@ -24,28 +24,26 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Staff>>> GetStaff()
         {
-          if (_context.Staff == null)
-          {
-              return NotFound();
-          }
-            return await _context.Staff.ToListAsync();
+            return await _context.Staff
+                .Include(staff=>staff.Company)
+                .ThenInclude(company=>company.Staff)
+                .ToListAsync();
         }
 
         // GET: api/apiStaffs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Staff>> GetStaff(int id)
         {
-          if (_context.Staff == null)
-          {
-              return NotFound();
-          }
+            if (_context.Staff == null)
+            {
+                return NotFound();
+            }
             var staff = await _context.Staff.FindAsync(id);
 
             if (staff == null)
             {
                 return NotFound();
             }
-
             return staff;
         }
 
@@ -82,13 +80,9 @@ namespace WebApi.Controllers
 
         // POST: api/apiStaffs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("addStaff")]
         public async Task<ActionResult<Staff>> PostStaff(Staff staff)
         {
-          if (_context.Staff == null)
-          {
-              return Problem("Entity set 'AirportManagementSystemContext.Staff'  is null.");
-          }
             _context.Staff.Add(staff);
             await _context.SaveChangesAsync();
 

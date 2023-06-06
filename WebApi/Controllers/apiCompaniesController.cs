@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             }
 
             return company;
-        }        
+        }
 
         // PUT: api/apiCompanies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -85,10 +85,10 @@ namespace WebApi.Controllers
         [HttpPost("addCompany")]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
-          if (_context.Companies == null)
-          {
-              return Problem("Entity set 'AirportManagementSystemContext.Companies'  is null.");
-          }
+            if (_context.Companies == null)
+            {
+                return Problem("Entity set 'AirportManagementSystemContext.Companies'  is null.");
+            }
             _context.Companies.Add(company);
             await _context.SaveChangesAsync();
 

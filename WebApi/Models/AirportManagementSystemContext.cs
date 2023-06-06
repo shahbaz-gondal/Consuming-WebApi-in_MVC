@@ -19,8 +19,6 @@ public partial class AirportManagementSystemContext : DbContext
 
     public virtual DbSet<Company> Companies { get; set; }
 
-    public virtual DbSet<Customer> Customers { get; set; }
-
     public virtual DbSet<Flight> Flights { get; set; }
 
     public virtual DbSet<Price> Prices { get; set; }
@@ -31,9 +29,11 @@ public partial class AirportManagementSystemContext : DbContext
 
     public virtual DbSet<Staff> Staff { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=CRIBL-SHAHFMUH1; database=AirportManagementSystem; trusted_connection=true; TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("server=CRIBL-SHAHFMUH1; database=AirportManagementSystem; trusted_connection=true; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,15 +45,10 @@ public partial class AirportManagementSystemContext : DbContext
             entity.Property(e => e.BookingDate)
                 .HasColumnType("date")
                 .HasColumnName("Booking_Date");
-            entity.Property(e => e.CustomerId).HasColumnName("Customer_Id");
             entity.Property(e => e.PriceId).HasColumnName("Price_Id");
             entity.Property(e => e.ScheduleId).HasColumnName("Schedule_Id");
             entity.Property(e => e.SeatId).HasColumnName("Seat_Id");
-
-            entity.HasOne(d => d.Customer).WithMany(p => p.Bookings)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Bookings__Custom__05D8E0BE");
+            entity.Property(e => e.UserId).HasColumnName("User_Id");
 
             entity.HasOne(d => d.Price).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.PriceId)
@@ -69,6 +64,11 @@ public partial class AirportManagementSystemContext : DbContext
                 .HasForeignKey(d => d.SeatId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Bookings__Seat_I__03F0984C");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Bookings__Custom__05D8E0BE");
         });
 
         modelBuilder.Entity<Company>(entity =>
@@ -84,23 +84,6 @@ public partial class AirportManagementSystemContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("Company_Type");
-        });
-
-        modelBuilder.Entity<Customer>(entity =>
-        {
-            entity.HasKey(e => e.CustomerId).HasName("PK__Customer__8CB286990BAB694B");
-
-            entity.Property(e => e.CustomerId).HasColumnName("Customer_Id");
-            entity.Property(e => e.Contact)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CustomerName)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("Customer_Name");
-            entity.Property(e => e.Gender)
-                .HasMaxLength(10)
-                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Flight>(entity =>
@@ -205,13 +188,37 @@ public partial class AirportManagementSystemContext : DbContext
 
             entity.HasOne(d => d.Company).WithMany(p => p.Staff)
                 .HasForeignKey(d => d.CompanyId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Staff__Company_I__440B1D61");
 
             entity.HasOne(d => d.Flight).WithMany(p => p.Staff)
                 .HasForeignKey(d => d.FlightId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Staff__Flight_Id__45F365D3");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("PK__Customer__8CB286990BAB694B");
+
+            entity.Property(e => e.UserId).HasColumnName("User_Id");
+            entity.Property(e => e.Contact)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Gender)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.Password)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Role)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.UserName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("User_Name");
         });
 
         OnModelCreatingPartial(modelBuilder);

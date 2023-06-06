@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebApi.Models.Staff>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>List of Staff</h3>
+
+<p>
+    <a asp-action="Create">Add New Staff</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Staff Id")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Gender")
+            </th>
+            <th>
+                @Html.DisplayName("Contact")
+            </th>
+            <th>
+                @Html.DisplayName("Position")
+            </th>
+            <th>
+                @Html.DisplayName("Company")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffGender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffPosition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company.CompanyName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id=item.StaffId}) |
+                @Html.ActionLink("Delete", "Delete", new {id=item.StaffId})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
